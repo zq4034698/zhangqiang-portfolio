@@ -1,0 +1,3 @@
+const http=require('http'),fs=require('fs'),path=require('path');
+const root=__dirname,mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
+http.createServer((req,res)=>{const clean=(req.url.split('?')[0]==='/'?'index.html':req.url.split('?')[0]).replace(/^[/\\]+/,'');const file=path.resolve(root,clean);if(!file.startsWith(root)){res.writeHead(403);return res.end()}fs.readFile(file,(err,data)=>{if(err){res.writeHead(404);return res.end('Not found')}res.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream'});res.end(data)})}).listen(4173,'127.0.0.1',()=>console.log('http://127.0.0.1:4173'));
